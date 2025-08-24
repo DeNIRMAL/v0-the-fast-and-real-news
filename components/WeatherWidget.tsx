@@ -19,6 +19,22 @@ const mockWeatherData = {
       { day: "Wed", high: 37, low: 25, condition: "Cloudy" },
     ],
   },
+  "New York": {
+    current: { temp: 26, condition: "Clear", humidity: 55, windSpeed: 10 },
+    forecast: [
+      { day: "Today", high: 27, low: 20, condition: "Clear" },
+      { day: "Tomorrow", high: 28, low: 21, condition: "Partly Cloudy" },
+      { day: "Wed", high: 26, low: 19, condition: "Rain" },
+    ],
+  },
+  "New York City": {
+    current: { temp: 26, condition: "Clear", humidity: 55, windSpeed: 10 },
+    forecast: [
+      { day: "Today", high: 27, low: 20, condition: "Clear" },
+      { day: "Tomorrow", high: 28, low: 21, condition: "Partly Cloudy" },
+      { day: "Wed", high: 26, low: 19, condition: "Rain" },
+    ],
+  },
   Mumbai: {
     current: { temp: 32, condition: "Rain", humidity: 80, windSpeed: 18 },
     forecast: [
@@ -171,18 +187,18 @@ export default function WeatherWidget() {
         (error) => {
           console.error("Geolocation error:", error)
           setLocationStatus("denied")
-          // Default to Delhi if location access is denied
-          fetchWeatherByCity("Delhi")
-          setActiveCity("Delhi")
-          setSearchedCities(["Delhi"])
+          // Default to New York City if location access is denied
+          fetchWeatherByCity("New York City")
+          setActiveCity("New York City")
+          setSearchedCities(["New York City"])
         },
       )
     } else {
       setLocationStatus("unavailable")
-      // Default to Delhi if geolocation is not available
-      fetchWeatherByCity("Delhi")
-      setActiveCity("Delhi")
-      setSearchedCities(["Delhi"])
+      // Default to New York City if geolocation is not available
+      fetchWeatherByCity("New York City")
+      setActiveCity("New York City")
+      setSearchedCities(["New York City"])
     }
   }, [])
 
@@ -257,7 +273,7 @@ export default function WeatherWidget() {
 
         // If API key is invalid, fall back to a default city
         if (geoResponse.status === 401) {
-          const fallbackCity = "Delhi"
+          const fallbackCity = "New York City"
           setMockWeatherData(fallbackCity)
           setActiveCity(fallbackCity)
           setSearchedCities((prev) => (prev.includes(fallbackCity) ? prev : [...prev, fallbackCity]))
@@ -278,8 +294,8 @@ export default function WeatherWidget() {
         console.error("Backup geocoding failed:", backupError)
       }
 
-      // If all else fails, use Delhi as fallback
-      const fallbackCity = "Delhi"
+      // If all else fails, use New York City as fallback
+      const fallbackCity = "New York City"
       setMockWeatherData(fallbackCity)
       setActiveCity(fallbackCity)
       setSearchedCities((prev) => (prev.includes(fallbackCity) ? prev : [...prev, fallbackCity]))
@@ -440,7 +456,7 @@ export default function WeatherWidget() {
     const normalizedCity = city.toLowerCase().trim()
 
     // Find a close match in our mock data
-    let mockCity: keyof typeof mockWeatherData = "Delhi" // Default fallback
+    let mockCity: keyof typeof mockWeatherData = "New York" // Default fallback
 
     // Try to find an exact match first
     for (const key in mockWeatherData) {
@@ -451,7 +467,7 @@ export default function WeatherWidget() {
     }
 
     // If no exact match, try to find a city that contains the search term
-    if (mockCity === "Delhi" && normalizedCity !== "delhi") {
+    if (mockCity === "New York" && normalizedCity !== "new york") {
       for (const key in mockWeatherData) {
         if (key.toLowerCase().includes(normalizedCity) || normalizedCity.includes(key.toLowerCase())) {
           mockCity = key as keyof typeof mockWeatherData

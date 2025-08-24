@@ -1,30 +1,43 @@
 # THE FAST AND REAL NEWS
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+This is a Next.js app (App Router) styled with Tailwind and shadcn/ui.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/denirmal/v0-the-fast-and-real-news)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/QW5KZ8bWqFJ)
+## Getting Started
 
-## Overview
+1. Install dependencies
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+```bash
+pnpm install
+```
 
-## Deployment
+2. Run the development server
 
-Your project is live at:
+```bash
+pnpm dev
+```
 
-**[https://vercel.com/denirmal/v0-the-fast-and-real-news](https://vercel.com/denirmal/v0-the-fast-and-real-news)**
+Open `http://localhost:3000` in your browser.
 
-## Build your app
+## Supabase Setup
 
-Continue building your app on:
+This project can use Supabase for data and auth. To configure:
 
-**[https://v0.app/chat/projects/QW5KZ8bWqFJ](https://v0.app/chat/projects/QW5KZ8bWqFJ)**
+1. Create a project at `https://supabase.com` and copy your Project URL and anon public key.
+2. Create `.env.local` and add:
 
-## How It Works
+```
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+3. Use the client from `lib/supabaseClient.ts`:
+
+```ts
+import { supabase } from '@/lib/supabaseClient'
+
+const { data, error } = await supabase.from('articles').select('*')
+```
+
+Notes:
+- Only variables prefixed with `NEXT_PUBLIC_` are exposed to the browser.
+- For server-only keys, use server route handlers or edge functions.
